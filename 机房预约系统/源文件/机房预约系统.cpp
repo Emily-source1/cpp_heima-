@@ -7,6 +7,43 @@ using namespace std;
 #include "globalFile.h"
 #include "fstream"
 
+void teacherMenu(Identity * &teacher)
+{
+    while(true)
+    {
+        //显示学生子菜单
+        teacher->openMenu();
+        
+        Teacher* tea = (Teacher*)teacher;
+        
+        int select;
+        cin >> select;
+
+        if(select == 1)
+        {
+            //查看所有预约
+            tea->showAllMenu();
+        }
+        else if(select == 2)
+        {
+            //审核预约
+            tea->validOrder(); 
+        }
+        else
+        {
+            //注销登录
+            delete teacher;
+            cout << "已注销登录" << endl;
+            
+            cout << "请按任意键继续..." << endl;
+            cin.ignore();
+            cin.get();
+            system("clear");
+            
+            return;
+        }
+    }
+}
 void studentMenu(Identity * &student)
 {
     while(true)
@@ -143,11 +180,7 @@ void Login(string fildname,int type)
             if(fname == name && fid == id && fpwd == pwd)
             {
                 cout << "登录验证通过" << endl;
-                cout << "请按任意键继续..." << endl;
-                cin.ignore();
-                cin.get();
-                system("clear");
-                
+                 
                 person = new Student(id,name,pwd);
                
                 //进入学生菜单
@@ -175,7 +208,8 @@ void Login(string fildname,int type)
                 system("clear");
                 
                 person = new Teacher(id,name,pwd);
-                
+                //进入教师子菜单
+                teacherMenu(person);
                 return;
             }
         }
